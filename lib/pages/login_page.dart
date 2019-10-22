@@ -17,14 +17,22 @@ class LoginPage extends StatelessWidget {
       padding: EdgeInsets.all(16), // Tamanho padrão do Material Design
       child: ListView(
         children: <Widget>[
-          Text("Email"),
-          TextFormField(),
+          TextFormField(
+            style: TextStyle(color: Colors.blue),
+            decoration: InputDecoration(
+              labelText: "Email",
+              labelStyle: TextStyle(color: Colors.lightBlue[100]),
+              hintText: "Digite seu email",
+              hintStyle: TextStyle(color: Colors.black38, fontSize: 15),
+            ),
+          ),
           SizedBox(
             height: 10,
           ),
-          Text("Senha"),
           TextFormField(
             obscureText: true, //Mostrar ***
+            decoration: InputDecoration(
+                labelText: "Senha", hintText: "Digite sua senha"),
           ),
           SizedBox(
             height: 20,
@@ -40,8 +48,8 @@ class LoginPage extends StatelessWidget {
                   fontSize: 22,
                 ),
               ),
-              onPressed: () { //Enquanto o botão não estiver o método onPressed, ele fica desativado. Fazer teste comentando.
-
+              onPressed: () {
+                //Enquanto o botão não estiver o método onPressed, ele fica desativado. Fazer teste comentando.
               },
             ),
           ),

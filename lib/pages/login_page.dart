@@ -2,6 +2,9 @@
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatelessWidget {
+  final _tLogin = TextEditingController();
+  final _tSenha = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,21 +20,21 @@ class LoginPage extends StatelessWidget {
       padding: EdgeInsets.all(16), // Tamanho padrão do Material Design
       child: ListView(
         children: <Widget>[
-          _textForm("Email", "Digite seu email"),
+          _textForm("Email", "Digite seu email", controller: _tLogin),
           SizedBox(
             height: 10,
           ),
-          _textForm("Senha", "Digite sua senha", password: true),
+          _textForm("Senha", "Digite sua senha", password: true, controller: _tSenha),
           SizedBox(
             height: 20,
           ),
-          _button("Entrar"),
+          _button("Entrar" , _onClickEntrar),
         ],
       ),
     );
   }
 
-  Container _button(String text) {
+  _button(String text, Function onPressed) {
     return Container(
       height: 46,
       child: RaisedButton(
@@ -43,16 +46,15 @@ class LoginPage extends StatelessWidget {
             fontSize: 22,
           ),
         ),
-        onPressed: () {
-          //Enquanto o botão não estiver o método onPressed, ele fica desativado. Fazer teste comentando.
-        },
+        onPressed: onPressed,  //Enquanto o botão não estiver o método onPressed, ele fica desativado. Fazer teste comentando.
       ),
     );
   }
 
   //O que está entre {} é um NamedArgument. Não é obrigatório utilizá-lo quando chamar o método, porem se tiver o @required, fica obrigatório.
-  _textForm(String label, String hint, {bool password = false}) {
+  _textForm(String label, String hint, {bool password = false , TextEditingController controller}) {
     return TextFormField(
+      controller: controller,
       obscureText: password,
       style: TextStyle(color: Colors.blue),
       decoration: InputDecoration(
@@ -62,5 +64,12 @@ class LoginPage extends StatelessWidget {
         hintStyle: TextStyle(color: Colors.black38, fontSize: 15),
       ),
     );
+  }
+
+  _onClickEntrar() {
+    String login = _tLogin.text;
+    String senha = _tSenha.text;
+
+    print("Email :$login, senha $senha");
   }
 }

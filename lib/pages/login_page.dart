@@ -17,43 +17,49 @@ class LoginPage extends StatelessWidget {
       padding: EdgeInsets.all(16), // Tamanho padrão do Material Design
       child: ListView(
         children: <Widget>[
-          TextFormField(
-            style: TextStyle(color: Colors.blue),
-            decoration: InputDecoration(
-              labelText: "Email",
-              labelStyle: TextStyle(color: Colors.lightBlue[100]),
-              hintText: "Digite seu email",
-              hintStyle: TextStyle(color: Colors.black38, fontSize: 15),
-            ),
-          ),
+          _textForm("Email", "Digite seu email"),
           SizedBox(
             height: 10,
           ),
-          TextFormField(
-            obscureText: true, //Mostrar ***
-            decoration: InputDecoration(
-                labelText: "Senha", hintText: "Digite sua senha"),
-          ),
+          _textForm("Senha", "Digite sua senha", password: true),
           SizedBox(
             height: 20,
           ),
-          Container(
-            height: 46,
-            child: RaisedButton(
-              color: Colors.blue,
-              child: Text(
-                "Entrar",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 22,
-                ),
-              ),
-              onPressed: () {
-                //Enquanto o botão não estiver o método onPressed, ele fica desativado. Fazer teste comentando.
-              },
-            ),
-          ),
+          _button("Entrar"),
         ],
+      ),
+    );
+  }
+
+  Container _button(String text) {
+    return Container(
+      height: 46,
+      child: RaisedButton(
+        color: Colors.blue,
+        child: Text(
+          text,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 22,
+          ),
+        ),
+        onPressed: () {
+          //Enquanto o botão não estiver o método onPressed, ele fica desativado. Fazer teste comentando.
+        },
+      ),
+    );
+  }
+
+  //O que está entre {} é um NamedArgument. Não é obrigatório utilizá-lo quando chamar o método, porem se tiver o @required, fica obrigatório.
+  _textForm(String label, String hint, {bool password = false}) {
+    return TextFormField(
+      obscureText: password,
+      style: TextStyle(color: Colors.blue),
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: TextStyle(color: Colors.blue),
+        hintText: hint,
+        hintStyle: TextStyle(color: Colors.black38, fontSize: 15),
       ),
     );
   }

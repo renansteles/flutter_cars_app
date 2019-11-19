@@ -6,6 +6,7 @@ class LoginPage extends StatelessWidget {
   final _tSenha = TextEditingController(text: "123");
 
   final _formKey = GlobalKey<FormState>();
+  final _focoSenha = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +32,8 @@ class LoginPage extends StatelessWidget {
               "Digite seu email",
               controller: _tLogin,
               validatorParametro: _validacaoLogin,
+              keyboardTypeParametro: TextInputType.emailAddress,
+              textInputActionParametro: TextInputAction.next,
             ),
             SizedBox(
               height: 10,
@@ -41,6 +44,8 @@ class LoginPage extends StatelessWidget {
               password: true,
               controller: _tSenha,
               validatorParametro: _validacaoSenha,
+              keyboardTypeParametro: TextInputType.number,
+              textInputActionParametro: TextInputAction.done
             ),
             SizedBox(
               height: 20,
@@ -79,12 +84,22 @@ class LoginPage extends StatelessWidget {
     bool password = false,
     TextEditingController controller,
     FormFieldValidator<String> validatorParametro,
+    TextInputType keyboardTypeParametro,
+    TextInputAction textInputActionParametro,
+    FocusNode focusNodeParametro,
   }) {
     return TextFormField(
       controller: controller,
       obscureText: password,
       validator: validatorParametro,
       //Validator vindo por parametro da funcção
+      keyboardType: keyboardTypeParametro,
+      keyboardAppearance: Brightness.light,
+      textInputAction: textInputActionParametro,
+      focusNode: focusNodeParametro,
+      onFieldSubmitted: (String text){
+        FocusScope.of(context).requestFocus( _focoSenha );
+      },
       style: TextStyle(color: Colors.blue),
       decoration: InputDecoration(
         labelText: label,

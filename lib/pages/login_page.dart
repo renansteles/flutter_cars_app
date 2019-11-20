@@ -1,5 +1,6 @@
 //nome de classe é sempre com letras minusculas e com underline no meio
 import 'package:carros/widgets/app_button.dart';
+import 'package:carros/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -42,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
         // Tamanho padrão do Material Design
         child: ListView(
           children: <Widget>[
-            _textForm(
+            AppText(
               "Email",
               "Digite seu email",
               controller: _tLogin,
@@ -53,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(
               height: 10,
             ),
-            _textForm(
+            AppText(
               "Senha",
               "Digite sua senha",
               password: true,
@@ -69,7 +70,7 @@ class _LoginPageState extends State<LoginPage> {
             AppButton(
               //Widget AppButton criado no arquivo app_button.dart
               "Entrar",
-              onPressed: _onClickEntrar(),
+              onPressed: _onClickEntrar,
             ),
           ],
         ),

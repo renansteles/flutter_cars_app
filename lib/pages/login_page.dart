@@ -1,4 +1,5 @@
 //nome de classe é sempre com letras minusculas e com underline no meio
+import 'package:carros/widgets/app_button.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -65,9 +66,11 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(
               height: 20,
             ),
-            _button("Entrar", () {
-              _onClickEntrar();
-            }),
+            AppButton(
+              //Widget AppButton criado no arquivo app_button.dart
+              "Entrar",
+              onPressed: _onClickEntrar(),
+            ),
           ],
         ),
       ),

@@ -1,12 +1,26 @@
 //nome de classe é sempre com letras minusculas e com underline no meio
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   final _tLogin = TextEditingController(text: "renan");
+
   final _tSenha = TextEditingController(text: "123");
 
   final _formKey = GlobalKey<FormState>();
+
   final _focoSenha = FocusNode();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    // esse método inicia antes do build
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +59,8 @@ class LoginPage extends StatelessWidget {
               controller: _tSenha,
               validatorParametro: _validacaoSenha,
               keyboardTypeParametro: TextInputType.number,
-              textInputActionParametro: TextInputAction.done
+              textInputActionParametro: TextInputAction.done,
+              focusNodeParametro: _focoSenha,
             ),
             SizedBox(
               height: 20,
@@ -77,7 +92,6 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  //O que está entre {} é um NamedArgument. Não é obrigatório utilizá-lo quando chamar o método, porem se tiver o @required, fica obrigatório.
   _textForm(
     String label,
     String hint, {
@@ -97,8 +111,9 @@ class LoginPage extends StatelessWidget {
       keyboardAppearance: Brightness.light,
       textInputAction: textInputActionParametro,
       focusNode: focusNodeParametro,
-      onFieldSubmitted: (String text){
-        FocusScope.of(context).requestFocus( _focoSenha );
+      onFieldSubmitted: (String text) {
+        FocusScope.of(context)
+            .requestFocus(_focoSenha); //O context vem do Statefull
       },
       style: TextStyle(color: Colors.blue),
       decoration: InputDecoration(

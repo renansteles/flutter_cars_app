@@ -1,6 +1,7 @@
 //nome de classe é sempre com letras minusculas e com underline no meio
 import 'package:carros/pages/home_page.dart';
 import 'package:carros/pages/login_api.dart';
+import 'package:carros/pages/usuario.dart';
 import 'package:carros/utils/nav.dart';
 import 'package:carros/widgets/app_button.dart';
 import 'package:carros/widgets/app_text.dart';
@@ -92,10 +93,16 @@ class _LoginPageState extends State<LoginPage> {
 
     print("Email :$login, senha $senha");
 
-    bool ok = await LoginApi.login(login, senha  );
+    Usuario usuario = await LoginApi.login(login, senha  );
     
-    if( ok ) push(context, HomePage() );
-    else print("Login incorreto");
+    if( usuario != null ){
+      print(">>>Usuário: $usuario");
+
+      push(context, HomePage() );
+    }
+    else{
+      print("Login incorreto");
+    }
   }
 
   String _validacaoLogin(String text) {

@@ -1,5 +1,6 @@
 //nome de classe é sempre com letras minusculas e com underline no meio
 import 'package:carros/pages/home_page.dart';
+import 'package:carros/pages/login_api.dart';
 import 'package:carros/utils/nav.dart';
 import 'package:carros/widgets/app_button.dart';
 import 'package:carros/widgets/app_text.dart';
@@ -82,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
 
 
 
-  _onClickEntrar() {
+  _onClickEntrar() async {
     bool formOk = _formKey.currentState
         .validate(); //O validate() chama o validator em todos os TextFormField
     if (!formOk) return; //validação não está ok
@@ -91,7 +92,10 @@ class _LoginPageState extends State<LoginPage> {
 
     print("Email :$login, senha $senha");
 
-    push(context , HomePage());
+    bool ok = await LoginApi.login(login, senha  );
+    
+    if( ok ) push(context, HomePage() );
+    else print("Login incorreto");
   }
 
   String _validacaoLogin(String text) {

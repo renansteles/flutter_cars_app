@@ -1,4 +1,4 @@
-import 'package:carros/pages/login_page.dart';
+import 'package:carros/pages/login/login_page.dart';
 import 'package:carros/utils/nav.dart';
 import 'package:flutter/material.dart';
 
@@ -48,7 +48,7 @@ class DrawerList extends StatelessWidget {
 							title: Text("Sair"),
 							trailing: Icon(Icons.arrow_forward),
 							onTap: () {
-								_onClickLogout(context)
+								_onClickLogout(context);
 							},
 						)
 					],

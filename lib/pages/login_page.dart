@@ -1,7 +1,9 @@
 //nome de classe é sempre com letras minusculas e com underline no meio
+import 'package:carros/pages/api_response.dart';
 import 'package:carros/pages/home_page.dart';
 import 'package:carros/pages/login_api.dart';
 import 'package:carros/pages/usuario.dart';
+import 'package:carros/utils/alert.dart';
 import 'package:carros/utils/nav.dart';
 import 'package:carros/widgets/app_button.dart';
 import 'package:carros/widgets/app_text.dart';
@@ -93,14 +95,17 @@ class _LoginPageState extends State<LoginPage> {
 
     print("Email :$login, senha $senha");
 
-    Usuario usuario = await LoginApi.login(login, senha  );
+    ApiResponse response = await LoginApi.login(login, senha  );
     
-    if( usuario != null ){
+    if( response.ok ){
+      Usuario usuario = response.result;
+
       print(">>>Usuário: $usuario");
 
       push(context, HomePage() );
     }
     else{
+      alert(context, response.mensagem);
       print("Login incorreto");
     }
   }

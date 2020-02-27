@@ -109,7 +109,7 @@ class _LoginPageState extends State<LoginPage> {
 
       print(">>>Usuário: $usuario");
 
-      push(context, HomePage());
+      push(context, HomePage(), replace: true);
     } else {
       alert(context, response.mensagem);
       print("Login incorreto");

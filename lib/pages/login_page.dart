@@ -23,6 +23,8 @@ class _LoginPageState extends State<LoginPage> {
 
   final _focoSenha = FocusNode();
 
+  bool _showProgress = false;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -77,14 +79,13 @@ class _LoginPageState extends State<LoginPage> {
               //Widget AppButton criado no arquivo app_button.dart
               "Entrar",
               onPressed: _onClickEntrar,
+              showProgress: _showProgress,
             ),
           ],
         ),
       ),
     );
   }
-
-
 
   _onClickEntrar() async {
     bool formOk = _formKey.currentState
@@ -95,16 +96,15 @@ class _LoginPageState extends State<LoginPage> {
 
     print("Email :$login, senha $senha");
 
-    ApiResponse response = await LoginApi.login(login, senha  );
-    
-    if( response.ok ){
+    ApiResponse response = await LoginApi.login(login, senha);
+
+    if (response.ok) {
       Usuario usuario = response.result;
 
       print(">>>Usuário: $usuario");
 
-      push(context, HomePage() );
-    }
-    else{
+      push(context, HomePage());
+    } else {
       alert(context, response.mensagem);
       print("Login incorreto");
     }

@@ -96,6 +96,12 @@ class _LoginPageState extends State<LoginPage> {
 
     print("Email :$login, senha $senha");
 
+    //O setState só pode ser chamado em uma classe que extends StatefulWidget.
+    //O metodo chama o metodo Build da classe, assim, atualiza os dados na tela
+    setState(() {
+      _showProgress = true;
+    });
+
     ApiResponse response = await LoginApi.login(login, senha);
 
     if (response.ok) {
@@ -108,6 +114,10 @@ class _LoginPageState extends State<LoginPage> {
       alert(context, response.mensagem);
       print("Login incorreto");
     }
+
+    setState(() {
+      _showProgress = false;
+    });
   }
 
   String _validacaoLogin(String text) {

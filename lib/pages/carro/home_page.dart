@@ -22,6 +22,13 @@ class HomePage extends StatelessWidget {
     return FutureBuilder(
       future: carros,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if(snapshot.hasError) {
+        	print(snapshot.error);
+			return Center(
+			  child: Text("Não foi possível buscar os carros ",
+			  	style: TextStyle(color: Colors.red, fontSize: 20)),
+			);
+        }
         if (!snapshot.hasData) {
           return Center(child: CircularProgressIndicator(),);
         }
@@ -48,12 +55,13 @@ class HomePage extends StatelessWidget {
                   children: <Widget>[
                     Center(
                       child: Image.network(
-                        c.urlFoto,
+                        //Exemplo de if ternário. se null retorna
+                        c.urlFoto ?? "http://www.livroandroid.com.br/livro/carros/classicos/Tucker.png",
                         width: 150,
                       ),
                     ),
                     Text(
-                      c.nome,
+                      c.nome ?? "Sem nome",
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(fontSize: 25),

@@ -1,16 +1,30 @@
 import 'package:carros/pages/carro/carro.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class CarrosApi {
   static Future<List<Carro>> getCarros() async {
-    final carros = List<Carro>();
+  	var url = "http://carros-springboot.herokuapp.com/api/v1/carros";
+	print("GET > $url");
 
     //Sempre que utilizar await, o método tem que ser async. E desse modo, o método tem que
 	// retornar um Future
     await Future.delayed(Duration(seconds: 5));
 
-	carros.add(Carro(nome: "Corsinha Wind", urlFoto: "http://www.livroandroid.com.br/livro/carros/classicos/Tucker.png"));
-	carros.add(Carro(nome: "Celtinha Malasombrado", urlFoto: "http://www.livroandroid.com.br/livro/carros/classicos/Tucker.png"));
-	carros.add(Carro(nome: "Fiat Uno", urlFoto: "http://www.livroandroid.com.br/livro/carros/classicos/Tucker.png"));
+    var response = await http.get(url);
+
+    String stringResponse = response.body;
+	print("Json > $stringResponse");
+
+	//json vem de pacote dart convert
+    List list = json.decode(stringResponse);
+
+    List<Carro> carros = List<Carro>();
+
+    for(Map map in list){
+    	Carro c = Carro.fromJson(map);
+    	carros.add(c);
+	}
 
 	return carros;
   }

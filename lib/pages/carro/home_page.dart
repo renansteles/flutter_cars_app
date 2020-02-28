@@ -16,13 +16,26 @@ class HomePage extends StatelessWidget {
   }
 
   _body() {
-    List<Carro> carros = CarrosApi.getCarros();
+    Future<List<Carro>> carros = CarrosApi.getCarros();
 
     //Container geralmente é utilizado para colocar uma margem, padding, espacamento e cores
+    return FutureBuilder(
+      future: carros,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (!snapshot.hasData) {
+          return Center(child: CircularProgressIndicator(),);
+        }
+        List<Carro> carros = snapshot.data;
+        return _listView(carros);
+      },
+    );
+  }
+
+  Container _listView(List<Carro> carros) {
     return Container(
       padding: EdgeInsets.all(16),
       child: ListView.builder(
-          itemCount: carros.length,
+          itemCount: carros.length != null ? carros.length : 0,
           itemBuilder: (content, index) {
             Carro c = carros[index];
 

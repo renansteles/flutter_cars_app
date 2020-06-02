@@ -2,18 +2,23 @@ import 'package:carros/pages/carro/carro.dart';
 import 'package:carros/pages/carro/carros_api.dart';
 import 'package:flutter/material.dart';
 
-class CarrosListview extends StatelessWidget {
+class CarrosListview extends StatefulWidget {
   String tipo;
 
   CarrosListview(this.tipo);
 
+  @override
+  _CarrosListviewState createState() => _CarrosListviewState();
+}
+
+class _CarrosListviewState extends State<CarrosListview> {
   @override
   Widget build(BuildContext context) {
     return _body();
   }
 
   _body() {
-    Future<List<Carro>> carros = CarrosApi.getCarros(TipoCarro.classicos);
+    Future<List<Carro>> carros = CarrosApi.getCarros(widget.tipo);
 
     return FutureBuilder(
       future: carros,

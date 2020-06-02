@@ -11,9 +11,15 @@ class CarrosListview extends StatefulWidget {
   _CarrosListviewState createState() => _CarrosListviewState();
 }
 
-class _CarrosListviewState extends State<CarrosListview> {
+class _CarrosListviewState extends State<CarrosListview>
+    with AutomaticKeepAliveClientMixin<CarrosListview> {
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   Widget build(BuildContext context) {
+    //não esquecer do super.build(). Já que mudou a var wantKeepAlive tem que avisar a classe mãe
+    super.build(context);
     return _body();
   }
 

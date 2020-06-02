@@ -2,9 +2,16 @@ import 'package:carros/pages/carro/carro.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+class TipoCarro {
+  static final String classicos = "classicos";
+  static final String esportivos = "esportivos";
+  static final String luxo = "luxo";
+
+}
+
 class CarrosApi {
-  static Future<List<Carro>> getCarros() async {
-    var url = "http://carros-springboot.herokuapp.com/api/v1/carros";
+  static Future<List<Carro>> getCarros(String tipo) async {
+    var url = "http://carros-springboot.herokuapp.com/api/v1/carros/tipo/$tipo";
     print("GET > $url");
 
     //Sempre que utilizar await, o método tem que ser async. E desse modo, o método tem que

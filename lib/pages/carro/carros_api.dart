@@ -1,4 +1,5 @@
 import 'package:carros/pages/carro/carro.dart';
+import 'package:carros/pages/login/usuario.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -6,19 +7,24 @@ class TipoCarro {
   static final String classicos = "classicos";
   static final String esportivos = "esportivos";
   static final String luxo = "luxo";
-
 }
 
 class CarrosApi {
   static Future<List<Carro>> getCarros(String tipo) async {
-    var url = "http://carros-springboot.herokuapp.com/api/v1/carros/tipo/$tipo";
+    Usuario usuario = await Usuario.get();
+    Map<String, String> headers = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer ${usuario.token}",
+    };
+    print("HEADERS > $headers");
+    var url = "http://carros-springboot.herokuapp.com/api/v2/carros/tipo/$tipo";
     print("GET > $url");
 
     //Sempre que utilizar await, o método tem que ser async. E desse modo, o método tem que
     // retornar um Future
-    await Future.delayed(Duration(seconds: 5));
+    //await Future.delayed(Duration(seconds: 5));
 
-    var response = await http.get(url);
+    var response = await http.get(url, headers: headers);
 
     String stringResponse = response.body;
     print("Json > $stringResponse");

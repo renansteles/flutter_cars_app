@@ -1,27 +1,36 @@
 import 'package:carros/pages/login/login_page.dart';
+import 'package:carros/pages/login/usuario.dart';
 import 'package:carros/utils/nav.dart';
+import 'package:carros/utils/prefs.dart';
 import 'package:flutter/material.dart';
 
 
 class DrawerList extends StatelessWidget {
+
+	UserAccountsDrawerHeader _header(Usuario user) {
+		return UserAccountsDrawerHeader(
+			accountName: Text(user.nome ?? "..."),
+			accountEmail: Text(user.email ?? "..."),
+			currentAccountPicture: CircleAvatar(
+				backgroundImage: NetworkImage(user.urlFoto ?? ""),
+			),
+		);
+	}
+
 	@override
 	Widget build(BuildContext context) {
+		Future<Usuario> future = Usuario.get();
+		
 		return SafeArea( //SafeArea deixa o drawer sobrebor a barra superior do android(Onde tem o wifi, hora etc)
 			child: Drawer(
 				child: ListView(
 					children: <Widget>[
-//				Container(
-//					color: Colors.blueAccent,
-//					height: 50,
-//				),
-						UserAccountsDrawerHeader(
-							accountName: Text("Renan Teles"),
-							accountEmail: Text("renansteles@gmail.com"),
-							currentAccountPicture: CircleAvatar(
-//						backgroundColor: Colors.redAccent,
-								backgroundImage: AssetImage(
-									"assets/images/1.jpg"),
-							),
+						FutureBuilder(
+							future: future,
+							builder: (context, snapshot) {
+								Usuario user = snapshot.data;
+								return user != null ? _header(user) : Container(child: Center(child: CircularProgressIndicator(),),);
+							},
 						),
 						ListTile( //Aula71
 							leading: Icon(Icons.playlist_add_check),

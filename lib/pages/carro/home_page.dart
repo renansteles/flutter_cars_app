@@ -17,13 +17,20 @@ class _HomePageState extends State<HomePage>
   @override
   void initState() {
     super.initState();
+    _initTabs();
+  }
+
+  _initTabs() async {
     //Construtor do TabController recebe a quantidade e o vsync(é TickerProvider),
     _tabController = TabController(length: 3, vsync: this);
 
-    Future<int> futureTab = Prefs.getInt("tabIdx");
-    futureTab.then((int indexTab) {
-      _tabController.index = indexTab;
-    });
+    //O Todo codigo comentado é subistituido usando async e await. Porem async a await sempre retornam um Future
+//    Future<int> futureTab = Prefs.getInt("tabIdx");
+//    futureTab.then((int indexTab) {
+//      _tabController.index = indexTab;
+//    });
+    int indexTab = await Prefs.getInt("tabIdx");
+    _tabController.index = indexTab;
 
     //Monitorar o _tabController
     _tabController.addListener(() {

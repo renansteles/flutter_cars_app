@@ -71,6 +71,7 @@ class DrawerList extends StatelessWidget {
   }
 
   void _onClickLogout(BuildContext context) {
+    Usuario.clear();
     Navigator.pop(context);
     push(context, LoginPage(),
         replace: true); //Parametro como true para não empilhar as telas

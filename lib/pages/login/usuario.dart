@@ -51,6 +51,9 @@ class Usuario {
 
   static Future<Usuario> get() async {
     String json = await Prefs.getString("user.prefs");
+    if (json.isEmpty) {
+      return null;
+    }
     Map map = convert.jsonDecode(json);
     return Usuario.fromJson(map);
   }
@@ -58,5 +61,9 @@ class Usuario {
   @override
   String toString() {
     return 'Usuario{id: $id, login: $login, nome: $nome, email: $email, urlFoto: $urlFoto, token: $token, roles: $roles}';
+  }
+
+  static void clear() {
+    Prefs.setString("user.prefs", "");
   }
 }

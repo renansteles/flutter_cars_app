@@ -15,9 +15,10 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final _tLogin = TextEditingController(text: "user");
+  //user ou admin senha 123
+  final _tLogin = TextEditingController();
 
-  final _tSenha = TextEditingController(text: "123");
+  final _tSenha = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -30,6 +31,13 @@ class _LoginPageState extends State<LoginPage> {
     // TODO: implement initState
     // esse método inicia antes do build
     super.initState();
+
+    Usuario.get().then((user) {
+      if(user!=null){
+        //Login automarico. Usuario salvo no prefs
+        push(context, HomePage(), replace: true);
+      }
+    });
   }
 
   @override

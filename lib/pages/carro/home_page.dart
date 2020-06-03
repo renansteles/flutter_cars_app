@@ -1,9 +1,8 @@
-import 'dart:html';
-
 import 'package:carros/drawer_list.dart';
 import 'package:carros/pages/carro/carro.dart';
 import 'package:carros/pages/carro/carros_api.dart';
 import 'package:carros/pages/carro/carros_listview.dart';
+import 'package:carros/utils/prefs.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -20,10 +19,16 @@ class _HomePageState extends State<HomePage>
     super.initState();
     //Construtor do TabController recebe a quantidade e o vsync(é TickerProvider),
     _tabController = TabController(length: 3, vsync: this);
-    _tabController.index = 1;
+
+    Future<int> futureTab = Prefs.getInt("tabIdx");
+    futureTab.then((int indexTab) {
+      _tabController.index = indexTab;
+    });
+
     //Monitorar o _tabController
     _tabController.addListener(() {
-      print("Tab: ${_tabController.index}");
+      //Salvando no sharedPreferences o index da ultima tab Aberta
+      Prefs.setInt("tabIdx", _tabController.index);
     });
   }
 

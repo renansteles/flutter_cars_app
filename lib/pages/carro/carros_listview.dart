@@ -20,6 +20,7 @@ class _CarrosListviewState extends State<CarrosListview>
 
   @override
   Widget build(BuildContext context) {
+    print("LISTVIEW BUILD ${widget.tipo}");
     //não esquecer do super.build(). Já que mudou a var wantKeepAlive tem que avisar a classe mãe
     super.build(context);
     return _body();

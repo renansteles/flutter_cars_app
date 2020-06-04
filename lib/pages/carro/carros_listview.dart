@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:carros/pages/carro/carro.dart';
 import 'package:carros/pages/carro/carro_page.dart';
 import 'package:carros/pages/carro/carros_api.dart';
+import 'package:carros/pages/carro/carros_bloc.dart';
 import 'package:carros/utils/nav.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +20,9 @@ class _CarrosListviewState extends State<CarrosListview>
     with AutomaticKeepAliveClientMixin<CarrosListview> {
   List<Carro> carros;
 
-  var _streamController = StreamController<List<Carro>>();
+  String get tipo => widget.tipo;
+
+  final _bloc = CarrosBloc();
 
   @override
   bool get wantKeepAlive => true;
@@ -28,13 +31,9 @@ class _CarrosListviewState extends State<CarrosListview>
   void initState() {
     //o initState é chamado apenas 1 vez na inicialização do StateFull
     super.initState();
-    _loadCarros();
+    _bloc.loadCarros(tipo);
   }
 
-  _loadCarros() async {
-    List<Carro> carros = await CarrosApi.getCarros(widget.tipo);
-    _streamController.add(carros);
-  }
 
   //no build é recomendado não ter logica, apenas exibiçao de dados
   @override
@@ -48,7 +47,7 @@ class _CarrosListviewState extends State<CarrosListview>
     //O streamBuilder é como se fosse um observer que fica observando a List<Carros> e atualiza automaticamente.
     //A vantagem é que não é preciso executar o método build novamente.
     return StreamBuilder(
-      stream: _streamController.stream,
+      stream: _bloc.stream,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.hasError) {
           print(snapshot.error);
@@ -133,6 +132,6 @@ class _CarrosListviewState extends State<CarrosListview>
   @override
   void dispose() {
     super.dispose();
-    _streamController.close(); //Liberando controle da memória
+    _bloc.dispose(); //Liberando controle da memória
   }
 }

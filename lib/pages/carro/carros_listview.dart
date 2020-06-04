@@ -15,39 +15,38 @@ class CarrosListview extends StatefulWidget {
 
 class _CarrosListviewState extends State<CarrosListview>
     with AutomaticKeepAliveClientMixin<CarrosListview> {
+  List<Carro> carros;
+
   @override
   bool get wantKeepAlive => true;
 
   @override
-  Widget build(BuildContext context) {
-    print("LISTVIEW BUILD ${widget.tipo}");
-    //não esquecer do super.build(). Já que mudou a var wantKeepAlive tem que avisar a classe mãe
-    super.build(context);
-    return _body();
+  void initState() {
+    //o initState é chamado apenas 1 vez na inicialização do StateFull
+    super.initState();
+    _loadData();
   }
 
-  _body() {
-    Future<List<Carro>> carros = CarrosApi.getCarros(widget.tipo);
+  _loadData() async {
+    List<Carro> carros = await CarrosApi.getCarros(widget.tipo);
+    setState(() {
+      this.carros = carros;
+    });
+  }
 
-    return FutureBuilder(
-      future: carros,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.hasError) {
-          print(snapshot.error);
-          return Center(
-            child: Text("Não foi possível buscar os carros ",
-                style: TextStyle(color: Colors.red, fontSize: 20)),
-          );
-        }
-        if (!snapshot.hasData) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-        List<Carro> carros = snapshot.data;
-        return _listView(carros);
-      },
-    );
+  //no build é recomendado não ter logica, apenas exibiçao de dados
+  @override
+  Widget build(BuildContext context) {
+    //não esquecer do super.build(). Já que mudou a var wantKeepAlive tem que avisar a classe mãe
+    super.build(context);
+    print("LISTVIEW BUILD ${widget.tipo}");
+
+    if (carros == null) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+    return _listView(carros);
   }
 
   Container _listView(List<Carro> carros) {

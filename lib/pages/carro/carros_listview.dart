@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:carros/pages/carro/carro.dart';
 import 'package:carros/pages/carro/carro_page.dart';
 import 'package:carros/pages/carro/carros_api.dart';
@@ -17,6 +19,8 @@ class _CarrosListviewState extends State<CarrosListview>
     with AutomaticKeepAliveClientMixin<CarrosListview> {
   List<Carro> carros;
 
+  var _streamController = StreamController<List<Carro>>();
+
   @override
   bool get wantKeepAlive => true;
 
@@ -24,14 +28,12 @@ class _CarrosListviewState extends State<CarrosListview>
   void initState() {
     //o initState é chamado apenas 1 vez na inicialização do StateFull
     super.initState();
-    _loadData();
+    _loadCarros();
   }
 
-  _loadData() async {
+  _loadCarros() async {
     List<Carro> carros = await CarrosApi.getCarros(widget.tipo);
-    setState(() {
-      this.carros = carros;
-    });
+    _streamController.add(carros);
   }
 
   //no build é recomendado não ter logica, apenas exibiçao de dados
@@ -39,14 +41,31 @@ class _CarrosListviewState extends State<CarrosListview>
   Widget build(BuildContext context) {
     //não esquecer do super.build(). Já que mudou a var wantKeepAlive tem que avisar a classe mãe
     super.build(context);
-    print("LISTVIEW BUILD ${widget.tipo}");
+    return _body();
+  }
 
-    if (carros == null) {
-      return Center(
-        child: CircularProgressIndicator(),
-      );
-    }
-    return _listView(carros);
+  _body() {
+    //O streamBuilder é como se fosse um observer que fica observando a List<Carros> e atualiza automaticamente.
+    //A vantagem é que não é preciso executar o método build novamente.
+    return StreamBuilder(
+      stream: _streamController.stream,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.hasError) {
+          print(snapshot.error);
+          return Center(
+            child: Text("Não foi possível buscar os carros ",
+                style: TextStyle(color: Colors.red, fontSize: 20)),
+          );
+        }
+        if (!snapshot.hasData) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        List<Carro> carros = snapshot.data;
+        return _listView(carros);
+      },
+    );
   }
 
   Container _listView(List<Carro> carros) {

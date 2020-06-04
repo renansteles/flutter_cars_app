@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:carros/pages/api_response.dart';
 import 'package:carros/pages/carro/home_page.dart';
 import 'package:carros/pages/login/login_api.dart';
+import 'package:carros/pages/login/login_bloc.dart';
 import 'package:carros/pages/login/usuario.dart';
 import 'package:carros/utils/alert.dart';
 import 'package:carros/utils/nav.dart';
@@ -20,7 +21,7 @@ class _LoginPageState extends State<LoginPage> {
   //user ou admin senha 123
   final _tLogin = TextEditingController();
 
-  var _streamController = StreamController<bool>();
+  final _bloc = LoginBloc();
 
   final _tSenha = TextEditingController();
 
@@ -87,7 +88,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             StreamBuilder<bool>(
                 //_streamController.strem faz a stream comecar a observar a variável de Future
-                stream: _streamController.stream,
+                stream: _bloc.buttomStream,
                 //valor incial do streamBuilder. Previne snapshot.data acessar null e dá error
                 initialData: false,
                 builder: (context, snapshot) {
@@ -113,15 +114,7 @@ class _LoginPageState extends State<LoginPage> {
 
     print("Email :$login, senha $senha");
 
-    //O setState só pode ser chamado em uma classe que extends StatefulWidget.
-    //O metodo chama o metodo Build da classe, assim, atualiza os dados na tela
-    //Não é preciso usar mais pois vamos monitorar se é para mostrar o progress no botão usando StreamBuilder.
-//    setState(() {
-//      _showProgress = true;
-//    });
-    _streamController.add(true); //O add envia informações para a Stream
-
-    ApiResponse response = await LoginApi.login(login, senha);
+    ApiResponse response = await _bloc.login(login, senha);
 
     if (response.ok) {
       Usuario usuario = response.result;
@@ -133,11 +126,6 @@ class _LoginPageState extends State<LoginPage> {
       alert(context, response.mensagem);
       print("Login incorreto");
     }
-
-//    setState(() {
-//      _showProgress = false;
-//    });
-    _streamController.add(false);
   }
 
   String _validacaoLogin(String text) {
@@ -157,6 +145,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void dispose() {
     super.dispose();
-    _streamController.close(); //Liberando da memoria o controller
+    _bloc.dispose();
   }
 }

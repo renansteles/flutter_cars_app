@@ -1,4 +1,6 @@
 //nome de classe é sempre com letras minusculas e com underline no meio
+import 'dart:async';
+
 import 'package:carros/pages/api_response.dart';
 import 'package:carros/pages/carro/home_page.dart';
 import 'package:carros/pages/login/login_api.dart';
@@ -18,13 +20,13 @@ class _LoginPageState extends State<LoginPage> {
   //user ou admin senha 123
   final _tLogin = TextEditingController();
 
+  var _streamController = StreamController<bool>();
+
   final _tSenha = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
   final _focoSenha = FocusNode();
-
-  bool _showProgress = false;
 
   @override
   void initState() {
@@ -33,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
 
     Usuario.get().then((user) {
-      if(user!=null){
+      if (user != null) {
         //Login automarico. Usuario salvo no prefs
         push(context, HomePage(), replace: true);
       }
@@ -83,12 +85,19 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(
               height: 20,
             ),
-            AppButton(
-              //Widget AppButton criado no arquivo app_button.dart
-              "Entrar",
-              onPressed: _onClickEntrar,
-              showProgress: _showProgress,
-            ),
+            StreamBuilder<bool>(
+                //_streamController.strem faz a stream comecar a observar a variável de Future
+                stream: _streamController.stream,
+                //valor incial do streamBuilder. Previne snapshot.data acessar null e dá error
+                initialData: false,
+                builder: (context, snapshot) {
+                  return AppButton(
+                    //Widget AppButton criado no arquivo app_button.dart
+                    "Entrar",
+                    onPressed: _onClickEntrar,
+                    showProgress: snapshot.data,
+                  );
+                }),
           ],
         ),
       ),
@@ -106,9 +115,11 @@ class _LoginPageState extends State<LoginPage> {
 
     //O setState só pode ser chamado em uma classe que extends StatefulWidget.
     //O metodo chama o metodo Build da classe, assim, atualiza os dados na tela
-    setState(() {
-      _showProgress = true;
-    });
+    //Não é preciso usar mais pois vamos monitorar se é para mostrar o progress no botão usando StreamBuilder.
+//    setState(() {
+//      _showProgress = true;
+//    });
+    _streamController.add(true); //O add envia informações para a Stream
 
     ApiResponse response = await LoginApi.login(login, senha);
 
@@ -123,9 +134,10 @@ class _LoginPageState extends State<LoginPage> {
       print("Login incorreto");
     }
 
-    setState(() {
-      _showProgress = false;
-    });
+//    setState(() {
+//      _showProgress = false;
+//    });
+    _streamController.add(false);
   }
 
   String _validacaoLogin(String text) {

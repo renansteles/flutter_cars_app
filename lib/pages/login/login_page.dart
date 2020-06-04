@@ -152,4 +152,11 @@ class _LoginPageState extends State<LoginPage> {
 
     return null; //retorno nulo siginifica que está correto
   }
+
+  //Inverso de initstate
+  @override
+  void dispose() {
+    super.dispose();
+    _streamController.close(); //Liberando da memoria o controller
+  }
 }

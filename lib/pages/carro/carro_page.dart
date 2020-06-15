@@ -48,7 +48,44 @@ class CarroPage extends StatelessWidget {
   _body() {
     return Container(
       padding: EdgeInsets.all(16),
-      child: Image.network(carro.urlFoto),
+      child: ListView(
+        children: [
+          Image.network(carro.urlFoto),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    carro.nome,
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    carro.tipo,
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  IconButton(
+                    icon: Icon(
+                      Icons.favorite,
+                      size: 40,
+                    ),
+                    onPressed: _onClickFavorito,
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.share),
+                    onPressed: _onClickCompartilhar,
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -69,4 +106,8 @@ class CarroPage extends StatelessWidget {
         break;
     }
   }
+
+  void _onClickFavorito() {}
+
+  void _onClickCompartilhar() {}
 }

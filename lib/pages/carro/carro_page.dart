@@ -1,17 +1,31 @@
+import 'package:carros/pages/carro/Loripsum_api.dart';
 import 'package:carros/pages/carro/carro.dart';
 import 'package:carros/widgets/text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class CarroPage extends StatelessWidget {
+class CarroPage extends StatefulWidget {
   Carro carro;
   CarroPage(this.carro);
+
+  @override
+  _CarroPageState createState() => _CarroPageState();
+}
+
+class _CarroPageState extends State<CarroPage> {
+  final _loripsumBloc = LoripsumBloc();
+
+  @override
+  void initState() {
+    super.initState();
+    _loripsumBloc.fetch();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(carro.nome),
+        title: Text(widget.carro.nome),
         actions: [
           IconButton(
             icon: Icon(Icons.place),
@@ -51,7 +65,7 @@ class CarroPage extends StatelessWidget {
       padding: EdgeInsets.all(16),
       child: ListView(
         children: [
-          Image.network(carro.urlFoto),
+          Image.network(widget.carro.urlFoto),
           _bloco1(),
           Divider(),
           _bloco2(),
@@ -67,9 +81,9 @@ class CarroPage extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            text(carro.nome, fontSize: 20, bold: true),
+            text(widget.carro.nome, fontSize: 20, bold: true),
             Text(
-              carro.tipo,
+              widget.carro.tipo,
               style: TextStyle(fontSize: 16),
             ),
           ],
@@ -97,10 +111,19 @@ class CarroPage extends StatelessWidget {
     return Column(
       children: [
         SizedBox(height: 20),
-        text(carro.descricao, fontSize: 16, bold: true),
+        text(widget.carro.descricao, fontSize: 16, bold: true),
         SizedBox(height: 20),
-        text(
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum")
+        StreamBuilder<String>(
+          stream: _loripsumBloc.stream,
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            return text(snapshot.data);
+          },
+        ),
       ],
     );
   }
@@ -126,4 +149,10 @@ class CarroPage extends StatelessWidget {
   void _onClickFavorito() {}
 
   void _onClickCompartilhar() {}
+
+  @override
+  void dispose() {
+    super.dispose();
+    _loripsumBloc.dispose();
+  }
 }

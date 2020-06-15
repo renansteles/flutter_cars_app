@@ -1,4 +1,5 @@
 import 'package:carros/pages/carro/carro.dart';
+import 'package:carros/widgets/text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -57,10 +58,7 @@ class CarroPage extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    carro.nome,
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
+                  text(carro.nome, fontSize: 20, bold: true),
                   Text(
                     carro.tipo,
                     style: TextStyle(fontSize: 16),

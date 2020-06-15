@@ -52,38 +52,56 @@ class CarroPage extends StatelessWidget {
       child: ListView(
         children: [
           Image.network(carro.urlFoto),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  text(carro.nome, fontSize: 20, bold: true),
-                  Text(
-                    carro.tipo,
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  IconButton(
-                    icon: Icon(
-                      Icons.favorite,
-                      size: 40,
-                    ),
-                    onPressed: _onClickFavorito,
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.share),
-                    onPressed: _onClickCompartilhar,
-                  ),
-                ],
-              ),
-            ],
-          ),
+          _bloco1(),
+          Divider(),
+          _bloco2(),
         ],
       ),
+    );
+  }
+
+  Row _bloco1() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            text(carro.nome, fontSize: 20, bold: true),
+            Text(
+              carro.tipo,
+              style: TextStyle(fontSize: 16),
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            IconButton(
+              icon: Icon(
+                Icons.favorite,
+                size: 40,
+              ),
+              onPressed: _onClickFavorito,
+            ),
+            IconButton(
+              icon: Icon(Icons.share),
+              onPressed: _onClickCompartilhar,
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  _bloco2() {
+    return Column(
+      children: [
+        SizedBox(height: 20),
+        text(carro.descricao, fontSize: 16, bold: true),
+        SizedBox(height: 20),
+        text(
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum")
+      ],
     );
   }
 

@@ -55,9 +55,16 @@ class _CarrosPageState extends State<CarrosPage>
           );
         }
         List<Carro> carros = snapshot.data;
-        return CarrosListview(carros);
+        return RefreshIndicator(
+          onRefresh: _onRefresh,
+          child: CarrosListview(carros),
+        );
       },
     );
+  }
+
+  Future<void> _onRefresh() {
+    return _bloc.loadCarros(tipo);
   }
 
   @override

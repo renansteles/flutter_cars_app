@@ -1,72 +1,15 @@
-import 'dart:async';
-
 import 'package:carros/pages/carro/carro.dart';
 import 'package:carros/pages/carro/carro_page.dart';
-import 'package:carros/pages/carro/carros_api.dart';
-import 'package:carros/pages/carro/carros_bloc.dart';
 import 'package:carros/utils/nav.dart';
-import 'package:carros/widgets/text_error.dart';
 import 'package:flutter/material.dart';
 
-class CarrosListview extends StatefulWidget {
-  String tipo;
-
-  CarrosListview(this.tipo);
-
-  @override
-  _CarrosListviewState createState() => _CarrosListviewState();
-}
-
-class _CarrosListviewState extends State<CarrosListview>
-    with AutomaticKeepAliveClientMixin<CarrosListview> {
+class CarrosListview extends StatelessWidget {
   List<Carro> carros;
 
-  String get tipo => widget.tipo;
+  CarrosListview(this.carros);
 
-  final _bloc = CarrosBloc();
-
-  @override
-  bool get wantKeepAlive => true;
-
-  @override
-  void initState() {
-    //o initState é chamado apenas 1 vez na inicialização do StateFull
-    super.initState();
-    _bloc.loadCarros(tipo);
-  }
-
-
-  //no build é recomendado não ter logica, apenas exibiçao de dados
   @override
   Widget build(BuildContext context) {
-    //não esquecer do super.build(). Já que mudou a var wantKeepAlive tem que avisar a classe mãe
-    super.build(context);
-    return _body();
-  }
-
-  _body() {
-    //O streamBuilder é como se fosse um observer que fica observando a List<Carros> e atualiza automaticamente.
-    //A vantagem é que não é preciso executar o método build novamente.
-    return StreamBuilder(
-      stream: _bloc.stream,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.hasError) {
-          print(snapshot.error);
-          return TextError("Não foi possível buscar os carros");
-        }
-        if (!snapshot.hasData) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-        List<Carro> carros = snapshot.data;
-        return _listView(carros);
-      },
-    );
-  }
-
-  Container _listView(List<Carro> carros) {
-    //Container geralmente é utilizado para colocar uma margem, padding, espacamento e cores
     return Container(
       padding: EdgeInsets.all(16),
       child: ListView.builder(
@@ -104,7 +47,7 @@ class _CarrosListviewState extends State<CarrosListview>
                         children: <Widget>[
                           FlatButton(
                             child: const Text('Detalhes'),
-                            onPressed: () => _onClickCarro(c),
+                            onPressed: () => _onClickCarro(context, c),
                           ),
                           FlatButton(
                             child: const Text('Share'),
@@ -123,13 +66,7 @@ class _CarrosListviewState extends State<CarrosListview>
     );
   }
 
-  _onClickCarro(Carro c) {
+  _onClickCarro(context, Carro c) {
     push(context, CarroPage(c));
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _bloc.dispose(); //Liberando controle da memória
   }
 }

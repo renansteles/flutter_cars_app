@@ -10,7 +10,7 @@ class CarroDAO {
 
   Future<int> save(Carro carro) async {
     var dbClient = await db;
-    var id = await dbClient.insert("carro", carro.toJson(),
+    var id = await dbClient.insert("carro", carro.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
     print('Salvando Carro id: $id');
     return id;
@@ -21,7 +21,7 @@ class CarroDAO {
 
     final list = await dbClient.rawQuery('select * from carro');
 
-    final carros = list.map<Carro>((json) => Carro.fromJson(json)).toList();
+    final carros = list.map<Carro>((json) => Carro.fromMap(json)).toList();
 
     return carros;
   }
@@ -32,7 +32,7 @@ class CarroDAO {
     final list =
         await dbClient.rawQuery('select * from carro where tipo =? ', [tipo]);
 
-    final carros = list.map<Carro>((json) => Carro.fromJson(json)).toList();
+    final carros = list.map<Carro>((json) => Carro.fromMap(json)).toList();
 
     return carros;
   }
@@ -43,7 +43,7 @@ class CarroDAO {
         await dbClient.rawQuery('select * from carro where id = ?', [id]);
 
     if (list.length > 0) {
-      return new Carro.fromJson(list.first);
+      return new Carro.fromMap(list.first);
     }
 
     return null;

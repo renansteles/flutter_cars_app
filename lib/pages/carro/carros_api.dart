@@ -33,7 +33,7 @@ class CarrosApi {
     //json vem de pacote dart convert
     List list = json.decode(stringResponse);
 
-    List<Carro> carros = list.map((map) => Carro.fromJson(map)).toList();
+    List<Carro> carros = list.map((map) => Carro.fromMap(map)).toList();
     final dao = CarroDAO();
 
     //Forma 1

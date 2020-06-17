@@ -35,12 +35,13 @@ class _LoginPageState extends State<LoginPage> {
     // esse método inicia antes do build
     super.initState();
 
-    Usuario.get().then((user) {
-      if (user != null) {
-        //Login automarico. Usuario salvo no prefs
-        push(context, HomePage(), replace: true);
-      }
-    });
+    //Código foi para a Splash Page
+//    Usuario.get().then((user) {
+//      if (user != null) {
+//        //Login automarico. Usuario salvo no prefs
+//        push(context, HomePage(), replace: true);
+//      }
+//    });
   }
 
   @override

@@ -12,7 +12,7 @@ class CarroDAO {
     var dbClient = await db;
     var id = await dbClient.insert("carro", carro.toJson(),
         conflictAlgorithm: ConflictAlgorithm.replace);
-    print('id: $id');
+    print('Salvando Carro id: $id');
     return id;
   }
 

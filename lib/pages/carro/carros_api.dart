@@ -1,3 +1,4 @@
+import 'package:carros/database/carro_dao.dart';
 import 'package:carros/pages/carro/carro.dart';
 import 'package:carros/pages/login/usuario.dart';
 import 'package:http/http.dart' as http;
@@ -32,15 +33,17 @@ class CarrosApi {
     //json vem de pacote dart convert
     List list = json.decode(stringResponse);
 
-    List<Carro> carros = List<Carro>();
+    List<Carro> carros = list.map((map) => Carro.fromJson(map)).toList();
+    final dao = CarroDAO();
 
-    for (Map map in list) {
-      Carro c = Carro.fromJson(map);
-      carros.add(c);
-    }
-    //ao invez do for, uma boa pratica é usar map
-    //final carros = list.map<Carro>((map)=>Carro.fromJson(map)).toList();
-    // (map) => Carro...  é igual a (map) { return Carro...; }
+    //Forma 1
+//    for (Carro map in list) {
+//      dao.save(map);
+//    }
+    //Forma 2
+//    list.forEach((carro) {dao.save(carro);});
+    //Forma 3
+    carros.forEach(dao.save);
 
     return carros;
   }
